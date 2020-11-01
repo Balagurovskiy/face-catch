@@ -1,91 +1,134 @@
 package com.my.app.face_catch;
 
- 
+import static org.opencv.imgproc.Imgproc.INTER_AREA;
+import static org.opencv.imgproc.Imgproc.resize;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.my.app.face_catch.db.dao.PersonnelDao;
+import com.my.app.face_catch.db.dao.TestTransaction;
+import com.my.app.face_catch.db.dto.Personnel;
 import com.my.app.face_catch.detectors.CascadeDetector;
 import com.my.app.face_catch.detectors.FaceDetector;
-import com.my.app.face_catch.processors.VisualSearchAlgorithm;
+import com.my.app.face_catch.services.VisualService;
+import com.my.app.face_catch.services.SearchResult;
+import com.my.app.face_catch.services.VisualSearchAlgorithm;
+
+import drawing_utils.DrawingUtils;
+import drawing_utils.RectangleUtil;
 
 @ComponentScan
-public class App 
-{
-    public static void main( String[] args )
-    {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(App.class);
+public class App {
+	public static void main(String[] args) {
+		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(App.class)) {
 
-        Property property = (Property) context.getBean("property");
-        FaceDetector faces = (FaceDetector) context.getBean("cascade");
+			Property property = (Property) context.getBean("property");
+			VisualService visualService = (VisualService) context.getBean("imageServiceCascade");
+			PersonnelDao personnelDao = (PersonnelDao) context.getBean("personnelDao");
 
-		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
-    		
+			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-    	    Mat src = Imgcodecs.imread( property.getProperty("opencv.input") );
-    	
-    	    // Instantiating the CascadeClassifier
-//    	    CascadeClassifier classifier = new CascadeClassifier( property.getProperty("opencv.cascade") );
-//    	
-//    	    // Detecting the face in the snap
-//    	    MatOfRect faceDetections = new MatOfRect();
-//    	    classifier.detectMultiScale(src, faceDetections);
-//    	    System.out.println(String.format("Detected %s inst", faceDetections.toArray().length));
-    	
-    	    // Drawing boxes
-//    	    for (Rect rect : faceDetections.toArray()) {
-    	    for (Rect rect : faces.find(src)) {
-    	    	
-    	    	Point startPoint = new Point(rect.x, rect.y);
-    	    	Point endPoint = new Point(rect.x + rect.width, rect.y + rect.height);
-    	    	
-    	
-    	    	Imgproc.rectangle(
-    	            src,                                              
-    	            new Point(rect.x, rect.y + rect.height),                          
-    	            new Point(rect.x + rect.width, rect.y + rect.height + 40),
-    	            new Scalar(11, 11, 11),
-    	            Imgproc.FILLED                                // Thickness
-    	         );
-    	//    	Imgproc.rectangle(
-    	//		  src,                                              
-    	//		  startPoint,                          
-    	//		  endPoint,
-    	//		  new Scalar(11, 11, 11),
-    	//		 1                              // Thickness
-    	//		);
-    	//    	
-    	//        // Adding Text
-    	//        Imgproc.putText (
-    	//        	src,
-    	//           " Unknown " + i,
-    	//           new Point(rect.x, rect.y + rect.height + 12),
-    	//           Imgproc.FONT_HERSHEY_SIMPLEX ,
-    	//           0.5,                               // front scale
-    	//           new Scalar(222, 222, 222),
-    	//           1                                // Thickness
-    	//       );
-    	    // Create rectangle with face
-    	    	Mat faceMats = src.submat( new Rect(startPoint, endPoint) );
-    	    }
-    	    
-    	    // Writing the image
-    	    Imgcodecs.imwrite( property.getProperty("opencv.output"), src );
-    	    
-    	    System.out.println("Image Processed");
-    }
+			DrawingUtils rectangleUtil = new RectangleUtil();
+			
+			
+			List<SearchResult> foundImages = visualService.executeSearch();
+
+ 
+//    	    // Create rectangle with face
+////	    	Mat faceMats = src.submat( new Rect(startPoint, endPoint) );
+
+			Map<Mat, Personnel> imagesFromDataBase = personnelDao.getPersonnel()
+													.stream()
+													.collect(
+															Collectors.toMap(
+																	p -> convertByteToMat(p.getImage()), 
+																	p -> p
+																	)
+															);
+
+		    List<SearchResult> unknown = new ArrayList<>();
+		    List<SearchResult> known = new ArrayList<>();
+			
+			imagesFromDataBase.forEach((keyMat, valPers) -> {
+				foundImages.forEach(searchResult -> {
+					Rect rect = searchResult.getRect();
+					Point start = new Point(rect.x, rect.y + rect.height);
+					Point end = new Point(rect.x + rect.width, rect.y + rect.height + 40);
+
+					if (calcMatDiff(keyMat, searchResult.getMat()) < 1.0) {
+
+						rectangleUtil.draw(visualService.getImage(), rect, new Scalar(22, 111, 11));
+						rectangleUtil.drawFilled(visualService.getImage(), start, end, new Scalar(22, 111, 11));
+						rectangleUtil.drawTextWhite(visualService.getImage(),
+								new Point(rect.x, rect.y + rect.height + 15),
+								valPers.getName());
+						rectangleUtil.drawTextWhite(visualService.getImage(),
+								new Point(rect.x, rect.y + rect.height + 30),
+								valPers.getProfile().getRole());
+						
+						known.add(new SearchResult(keyMat, searchResult.getRect()));
+					}
+		    		else {
+		    			rectangleUtil.draw(visualService.getImage(), rect, new Scalar(11, 11, 222));
+		    			rectangleUtil.drawFilled(visualService.getImage(), start, end, new Scalar(11, 11, 222));
+				    	rectangleUtil.drawTextWhite(visualService.getImage(),  
+				    			new Point(rect.x, rect.y + rect.height + 12), 
+				    			"Unknown");
+		    		}
+				});
+			});
+			
+			visualService.export(property.getProperty("opencv.output"));
+
+		}
+	}
+
+	static Mat convertByteToMat(byte bytes[]) {
+		return Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
+	}
+
+	static double calcMatDiff(final Mat a, final Mat b) {
+
+		final int HEIGHT = 100;
+		final int WIDTH = 100;
+
+		Size scaleSize = new Size(HEIGHT, WIDTH);
+
+		Mat resA = new Mat();
+		resize(a, resA, scaleSize, 0, 0, INTER_AREA);
+
+		Mat resB = new Mat();
+		resize(b, resB, scaleSize, 0, 0, INTER_AREA);
+
+		long diff = 0;
+		// split on threads
+		for (int w = 0; w < WIDTH; w++) {
+			for (int h = 0; h < HEIGHT; h++) {
+				double[] rgbA = resA.get(w, h);
+				double[] rgbB = resB.get(w, h);
+				diff += Math.abs(rgbA[0] - rgbB[0]) + Math.abs(rgbA[1] - rgbB[1]) + Math.abs(rgbA[2] - rgbB[2]);
+			}
+		}
+		double avg = diff / (WIDTH * HEIGHT * 3);
+
+		return (avg / 255) * 100;
+	}
 }
-//--------------- GET PIXEL SAMPLE
-//double[] rgb = image.get(0, 0); Mat - image
-//Log.i("", "red:"+rgb[0]+"green:"+rgb[1]+"blue:"+rgb[2]);
-//image.put(0, 0, new double[]{255, 255, 0});//sets the pixel to yellow
-//--------------- LOAD MAT FROM BYTES SAMPLE
-//byte[] bytes = FileUtils.readFileToByteArray(new File("aaa.jpg"));
-//Mat mat = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);

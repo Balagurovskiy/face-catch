@@ -5,28 +5,25 @@ import java.io.IOException;
 import java.util.Properties;
 
 
-public class Property {
-	private final String PROPERTY_FILE = "src/main/resources/settings.properties";
+public class Property{
+	
+	
 	private final Properties PROPERTY = new Properties();
-	private boolean status;
 	
+	private boolean active;
 	
-	public Property() {
-		status = true;
+	public Property(String file) {
+		active = true;
 	    try {
-	    	PROPERTY.load(new FileInputStream( PROPERTY_FILE ));
+	    	PROPERTY.load(new FileInputStream( file ));
 	    } catch (IOException e) {
-//	    	MAKE LOG - PROPERTY FILE NOT FOUND
 	    	System.out.println("settings.properties -  FILE NOT FOUND");
-	    	status = false;
+	    	active = false;
 	    }
 	}
 	
-	public boolean getStatus() {
-		return status;
-	}
 	public String getProperty(String key) {
-		if(status) {
+		if(active) {
 			return PROPERTY.getProperty(key);
 		}
 		return null;

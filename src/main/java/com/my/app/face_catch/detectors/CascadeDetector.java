@@ -14,48 +14,43 @@ import org.opencv.objdetect.CascadeClassifier;
 import com.my.app.face_catch.Property;
 
 public class CascadeDetector implements FaceDetector {
-
-	private static final String CASCADE_FILE = "opencv.cascade";
-	
-    private boolean status;
     
     private CascadeClassifier classifier;
+    private boolean active;
     
-	public CascadeDetector(Property property) {
-		status = true;
+    public CascadeDetector() {
+    	active = false;
+	}
+    
+	public CascadeDetector(String imageFilePath) {
+		active = true;
 
-		if (property.getStatus() == false) {
-	       //LOG HERE
-			System.out.println("CASCADE DETECTOR FAILED - PROPERRTY EXCEPTION");
-			status = false;
-			return ;
-		}
 	    try {
 			System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
-	    	classifier = new CascadeClassifier( property.getProperty(CASCADE_FILE) );
+	    	classifier = new CascadeClassifier( imageFilePath );
 	    }catch (UnsatisfiedLinkError e) {
-	    	status = false;
-	       //LOG HERE
-			System.out.println("CASCADE CLASSIFIER WAS NOT SETTED - OPEN CV CORE NOT INITIALIZED");
+	    	System.out.println("CASCADE CLASSIFIER WAS NOT SETTED - OPEN CV CORE NOT INITIALIZED");
+	    	active = false;
 		}catch (NullPointerException e) {
-			status = false;
-	       //LOG HERE
-			System.out.println("CASCADE CLASSIFIER WAS NOT SETTED - THERE IS NO 'opencv.cascade' PROPERTY");
+			System.out.println("CASCADE CLASSIFIER WAS NOT SETTED - THERE IS NO CASCADE.XML FILE SOURCE");
+			active = false;
 		}
 	}
 
 	@Override
 	public List<Rect> find(Mat mat) {
-		if (status == false || mat == null) {
-			//LOG HERE
-			System.out.println("CASCADE DETECTOR FAILED - FIND EXCEPTION");
-			return new ArrayList<Rect>();
+		if (active) {
+			
+			MatOfRect faceDetections = new MatOfRect();
+			
+			 try {
+				 classifier.detectMultiScale(mat, faceDetections);
+			}catch (NullPointerException e) {
+				System.out.println("CASCADE DETECTOR FAILED - FIND EXCEPTIONE");
+			}
+			
+			return Arrays.asList(faceDetections.toArray());
 		}
-		MatOfRect faceDetections = new MatOfRect();
-		classifier.detectMultiScale((Mat)mat, faceDetections);
-		
-		List<Rect> allFaceMats = Arrays.asList(faceDetections.toArray());
-		
-		return allFaceMats;
+		return new ArrayList<Rect>();
 	}
 }

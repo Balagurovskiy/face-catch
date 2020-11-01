@@ -9,20 +9,15 @@ import com.my.app.face_catch.Property;
 
 public class CaffeDetector implements FaceDetector {
 	
-    private static final String PROTO_FILE = "opencv.proto";
-    private static final String CAFFE_MODEL_FILE = "opencv.caffe-model";
-    
-    private boolean status;
     
 //    private ToIplImage converter;
 //    private Net net;
     
-	public CaffeDetector(Property property) {
-		status = true;
-//		net = readNetFromCaffe(PROTO_FILE, CAFFE_MODEL_FILE);
+	public CaffeDetector(String protoFilePath, String caffeModelPath) {
+//		net = readNetFromCaffe(protoFilePath, caffeModelPath);
 //		converter = new OpenCVFrameConverter.ToIplImage();
 	}
-
+ 
 	@Override
 	public List<Rect> find(Mat mat) {
 //        resize(mat, mat, new Size(300, 300));//resize the image to match the input size of the model
