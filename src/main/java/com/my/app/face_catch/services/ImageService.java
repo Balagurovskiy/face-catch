@@ -10,11 +10,13 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
+import com.my.app.face_catch.services.search_algorithm.VisualSearchAlgorithm;
+
 public class ImageService implements VisualService {
 	
 	private Mat image;
 	private boolean active;
-	VisualSearchAlgorithm vsa;
+	private VisualSearchAlgorithm vsa;
 	
 	public ImageService() {
 		active = false;
@@ -59,6 +61,8 @@ public class ImageService implements VisualService {
 							rect -> new SearchResult(getImage().submat(rect), rect)
 						)
 					.collect(Collectors.toList());
+			
+			
 		}
 		return new ArrayList<SearchResult>();
 	}
@@ -66,7 +70,6 @@ public class ImageService implements VisualService {
 	@Override
 	public void export(String path) {
 		if (active) {
-		  
 		   Imgcodecs.imwrite(path , image);
 		}
 	}

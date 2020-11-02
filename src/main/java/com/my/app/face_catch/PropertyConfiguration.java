@@ -3,9 +3,9 @@ package com.my.app.face_catch;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.my.app.face_catch.detectors.CaffeDetector;
-import com.my.app.face_catch.detectors.CascadeDetector;
-import com.my.app.face_catch.detectors.FaceDetector;
+import com.my.app.face_catch.detectors.face.CaffeDetector;
+import com.my.app.face_catch.detectors.face.CascadeDetector;
+import com.my.app.face_catch.detectors.face.FaceDetector;
 
 @Configuration
 public class PropertyConfiguration {

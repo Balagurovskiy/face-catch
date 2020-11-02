@@ -1,4 +1,4 @@
-package com.my.app.face_catch.services;
+package com.my.app.face_catch.services.search_algorithm;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.my.app.face_catch.detectors;
+package com.my.app.face_catch.detectors.face;
 
 import java.util.ArrayList;
 import java.util.Arrays;

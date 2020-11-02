@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import com.my.app.face_catch.Property;
+import com.my.app.face_catch.services.search_algorithm.VisualSearchAlgorithm;
 
 @Configuration
 public class ServiceConfiguration {

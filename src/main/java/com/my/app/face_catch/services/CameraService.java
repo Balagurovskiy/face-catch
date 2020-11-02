@@ -7,6 +7,8 @@ import java.util.List;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
+import com.my.app.face_catch.services.search_algorithm.VisualSearchAlgorithm;
+
 public class CameraService implements VisualService {
 
 	private Mat image;

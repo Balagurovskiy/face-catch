@@ -1,4 +1,4 @@
-package com.my.app.face_catch.detectors;
+package com.my.app.face_catch.detectors.face;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

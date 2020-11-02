@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
@@ -26,17 +29,20 @@ import org.springframework.context.annotation.ComponentScan;
 import com.my.app.face_catch.db.dao.PersonnelDao;
 import com.my.app.face_catch.db.dao.TestTransaction;
 import com.my.app.face_catch.db.dto.Personnel;
-import com.my.app.face_catch.detectors.CascadeDetector;
-import com.my.app.face_catch.detectors.FaceDetector;
+import com.my.app.face_catch.detectors.face.CascadeDetector;
+import com.my.app.face_catch.detectors.face.FaceDetector;
 import com.my.app.face_catch.services.VisualService;
+import com.my.app.face_catch.services.search_algorithm.VisualSearchAlgorithm;
 import com.my.app.face_catch.services.SearchResult;
-import com.my.app.face_catch.services.VisualSearchAlgorithm;
 
 import drawing_utils.DrawingUtils;
 import drawing_utils.RectangleUtil;
 
 @ComponentScan
 public class App {
+	
+	public static DrawingUtils rectangleUtil;
+	
 	public static void main(String[] args) {
 		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(App.class)) {
 
@@ -46,65 +52,112 @@ public class App {
 
 			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-			DrawingUtils rectangleUtil = new RectangleUtil();
+			rectangleUtil = new RectangleUtil();
 			
-			
+			//FIND FACES ON INPUT IMAGE
 			List<SearchResult> foundImages = visualService.executeSearch();
-
- 
-//    	    // Create rectangle with face
-////	    	Mat faceMats = src.submat( new Rect(startPoint, endPoint) );
-
-			Map<Mat, Personnel> imagesFromDataBase = personnelDao.getPersonnel()
-													.stream()
-													.collect(
-															Collectors.toMap(
-																	p -> convertByteToMat(p.getImage()), 
-																	p -> p
-																	)
-															);
-
-		    List<SearchResult> unknown = new ArrayList<>();
-		    List<SearchResult> known = new ArrayList<>();
+			// DB SELECT
+			List<Personnel> imagesFromDataBase = personnelDao.getPersonnel();
+			// CONVERT IMAGE BYTE ARR FROM DB TO OPENCV MATRIX
+			Map<Mat, Personnel> personnelWithConvertedImages = imagesFromDataBase
+																.stream()
+																.collect(
+																		Collectors.toMap(
+																				p -> convertByteToMat(p.getImage()), 
+																				p -> p
+																				)
+																		);
 			
-			imagesFromDataBase.forEach((keyMat, valPers) -> {
-				foundImages.forEach(searchResult -> {
+			//CALCULATE DIFFERENCES BETWEEN FOUND FACE IMAGE MATRICES WITH DB MATRICES
+			Map<SearchResult, Optional<Personnel>> comparisonResult = foundImages
+															.stream()
+															.collect(
+																	Collectors.toMap(
+																				sr-> sr,
+																				sr-> Optional.ofNullable(
+																						findSituablePersonnel(personnelWithConvertedImages, sr)
+																						)
+																				)
+																	);
+			//DRAW COMPARE RESULT ON INPUT MATRIX
+			comparisonResult.forEach((searchResult, personnel) -> {
+				
 					Rect rect = searchResult.getRect();
-					Point start = new Point(rect.x, rect.y + rect.height);
-					Point end = new Point(rect.x + rect.width, rect.y + rect.height + 40);
-
-					if (calcMatDiff(keyMat, searchResult.getMat()) < 1.0) {
-
-						rectangleUtil.draw(visualService.getImage(), rect, new Scalar(22, 111, 11));
-						rectangleUtil.drawFilled(visualService.getImage(), start, end, new Scalar(22, 111, 11));
-						rectangleUtil.drawTextWhite(visualService.getImage(),
-								new Point(rect.x, rect.y + rect.height + 15),
-								valPers.getName());
-						rectangleUtil.drawTextWhite(visualService.getImage(),
-								new Point(rect.x, rect.y + rect.height + 30),
-								valPers.getProfile().getRole());
+					
+					if (personnel.isPresent()) {
+						drawValidRect(rect, visualService.getImage(), personnel.get());
+					} else {
 						
-						known.add(new SearchResult(keyMat, searchResult.getRect()));
+						drawUnknownRect(rect, visualService.getImage());
 					}
-		    		else {
-		    			rectangleUtil.draw(visualService.getImage(), rect, new Scalar(11, 11, 222));
-		    			rectangleUtil.drawFilled(visualService.getImage(), start, end, new Scalar(11, 11, 222));
-				    	rectangleUtil.drawTextWhite(visualService.getImage(),  
-				    			new Point(rect.x, rect.y + rect.height + 12), 
-				    			"Unknown");
-		    		}
-				});
-			});
-			
+				}
+			);
+			//EXPORT MATRIX TO IMAGE FILE AFTER DRAW
 			visualService.export(property.getProperty("opencv.output"));
 
 		}
 	}
-
+	static public final Scalar GREEN =  new Scalar(22, 111, 11);
+	static public final Scalar RED =  new Scalar(11, 11, 222);
+	
+	static void drawValidRect(Rect rect, Mat source, Personnel personnel) {
+		Point start = new Point(rect.x, rect.y + rect.height);
+		Point end = new Point(rect.x + rect.width, rect.y + rect.height + 40);
+		
+		rectangleUtil.draw(source, rect, GREEN);
+		rectangleUtil.drawFilled(source, start, end, GREEN);
+		
+		rectangleUtil.drawTextWhite(source,
+				new Point(rect.x, rect.y + rect.height + 15),
+				personnel.getName());
+		
+		rectangleUtil.drawTextWhite(source,
+				new Point(rect.x, rect.y + rect.height + 30),
+				personnel.getProfile().getRole());
+	}
+	
+	static void drawUnknownRect(Rect rect, Mat source) {
+		Point start = new Point(rect.x, rect.y + rect.height);
+		Point end = new Point(rect.x + rect.width, rect.y + rect.height + 20);
+		
+		rectangleUtil.draw(source, rect, RED);
+		rectangleUtil.drawFilled(source, start, end, RED);
+		
+    	rectangleUtil.drawTextWhite(source,  
+    			new Point(rect.x, rect.y + rect.height + 12), 
+    			"Unknown");
+	}
+	
+	
+//	Collector.of(
+//	        ArrayList::new,				// supplier
+//	        ArrayList::add,				// accumulator
+//	        (a, b) -> {					// combiner
+//	            a.addAll(b);
+//	            return a;
+//	        },
+//	        a -> a.isEmpty() ? null : a  // finisher
+//	    )
+	static Personnel findSituablePersonnel(Map<Mat, Personnel> personnelWithConvertedImages, SearchResult searchResult) {
+		Set<Mat> situableMatrix = personnelWithConvertedImages.keySet()
+									.stream()
+									.filter(m -> calcMatDiff(m, searchResult.getMat()) < 9.0)
+									.collect(Collectors.toSet());
+		if (situableMatrix.isEmpty()) {
+			return null;
+		}
+		return personnelWithConvertedImages.get( 
+						situableMatrix.iterator().next() 
+						);
+	}
+	
+	
 	static Mat convertByteToMat(byte bytes[]) {
 		return Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
 	}
 
+	
+	
 	static double calcMatDiff(final Mat a, final Mat b) {
 
 		final int HEIGHT = 100;
