@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -12,6 +13,7 @@ import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 
 import com.my.app.face_catch.Property;
+import com.my.app.face_catch.services.visual_algorithms.SearchResult;
 
 public class CascadeDetector implements FaceDetector {
     
@@ -38,7 +40,7 @@ public class CascadeDetector implements FaceDetector {
 	}
 
 	@Override
-	public List<Rect> find(Mat mat) {
+	public List<SearchResult> find(Mat mat) {
 		if (active) {
 			
 			MatOfRect faceDetections = new MatOfRect();
@@ -49,8 +51,13 @@ public class CascadeDetector implements FaceDetector {
 				System.out.println("CASCADE DETECTOR FAILED - FIND EXCEPTIONE");
 			}
 			
-			return Arrays.asList(faceDetections.toArray());
+			return Arrays.asList(faceDetections.toArray())
+								.stream()
+								.map(
+										rect -> new SearchResult(mat.submat(rect), rect)
+									)
+								.collect(Collectors.toList());
 		}
-		return new ArrayList<Rect>();
+		return new ArrayList<SearchResult>();
 	}
 }

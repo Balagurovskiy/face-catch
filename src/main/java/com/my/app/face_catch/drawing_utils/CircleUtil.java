@@ -1,4 +1,4 @@
-package drawing_utils;
+package com.my.app.face_catch.drawing_utils;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

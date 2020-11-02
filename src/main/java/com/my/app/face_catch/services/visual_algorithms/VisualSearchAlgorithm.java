@@ -1,4 +1,4 @@
-package com.my.app.face_catch.services.search_algorithm;
+package com.my.app.face_catch.services.visual_algorithms;
 
 import java.util.List;
 
@@ -7,5 +7,5 @@ import org.opencv.core.Rect;
 
 
 public interface VisualSearchAlgorithm{
-	public List<Rect> find(Mat mat);
+	public List<SearchResult> find(Mat mat);
 }

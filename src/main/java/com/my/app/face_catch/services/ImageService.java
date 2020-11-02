@@ -1,39 +1,47 @@
 package com.my.app.face_catch.services;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
-import com.my.app.face_catch.services.search_algorithm.VisualSearchAlgorithm;
+import com.my.app.face_catch.db.dto.Personnel;
+import com.my.app.face_catch.drawing_utils.patterns.RectWithInfo;
+import com.my.app.face_catch.services.builder.VusialServiceBuilder;
+import com.my.app.face_catch.services.visual_algorithms.SearchResult;
 
 public class ImageService implements VisualService {
 	
 	private Mat image;
 	private boolean active;
-	private VisualSearchAlgorithm vsa;
+	
+	private VusialServiceBuilder builder;
 	
 	public ImageService() {
 		active = false;
 	}
 	
-	public ImageService(String imageFilePath, VisualSearchAlgorithm vsa) {
-		active = true;
-		if (vsa == null) {
-	    	System.out.println("IMAGE PROCESSOR WAS NOT SETTED - VisualSearchAlgorithm IS NULL");
+	public ImageService(VusialServiceBuilder builder) {
+		this.builder = builder;
+		
+		if (builder.isReady()) {
+			active = true;
+		} else {
+			System.out.println("IMAGE PROCESSOR WAS NOT SETTED - VISUAL SERVICE BILDER FAILED");
 	    	active = false;
 	    	return ;
-		} else {
-			this.vsa = vsa;
 		}
 	    try {
 			System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
-			image = Imgcodecs.imread( imageFilePath );
+			image = Imgcodecs.imread( builder.getImportPath() );
 	    }catch (UnsatisfiedLinkError e) {
 	    	System.out.println("IMAGE PROCESSOR WAS NOT SETTED - OPEN CV CORE NOT INITIALIZED");
 	    	active = false;
@@ -43,34 +51,74 @@ public class ImageService implements VisualService {
 		}
 	}
 	
-	public Mat getImage() {
-		return image;
+	@Override
+	public void execute() {
+		if (active) {
+			List<SearchResult> foundFaces = builder.getVsa().find(image);
+			List<Personnel> imagesFromDataBase = builder.getPersonnelDao().getPersonnel();
+			
+			//CALCULATE DIFFERENCES BETWEEN FOUND FACE IMAGE MATRICES WITH DB MATRICES
+			Map<SearchResult, Optional<Personnel>> comparisonResult = matchPersonnelWithFoundFaces(foundFaces, imagesFromDataBase);
+			
+			export(comparisonResult);
+		}
 	}
 	
-	// refactor 
-	// - bd load here
-	// - compare 
-	// - draw info on matrix
-	// **** remove return value ?????
-	@Override
-	public List<SearchResult> executeSearch() {
-		if (active) {
-			return vsa.find(image)
-					.stream()
-					.map(
-							rect -> new SearchResult(getImage().submat(rect), rect)
-						)
-					.collect(Collectors.toList());
-			
-			
-		}
-		return new ArrayList<SearchResult>();
+	private Map<SearchResult, Optional<Personnel>> matchPersonnelWithFoundFaces(List<SearchResult> foundFaces, List<Personnel> imagesFromDataBase){
+		// CONVERT IMAGE BYTE ARR FROM DB TO OPENCV MATRIX
+		Map<Mat, Personnel> personnelWithConvertedImages = imagesFromDataBase
+				.stream()
+				.collect(
+						Collectors.toMap(
+								p -> convertByteToMat(p.getImage()), 
+								p -> p
+								)
+						);
+		
+		return foundFaces
+				.stream()
+				.collect(
+						Collectors.toMap(
+									sr-> sr,
+									sr-> Optional.ofNullable(
+											findSituablePersonnel(personnelWithConvertedImages, sr)
+											)
+									)
+						);
 	}
-
-	@Override
-	public void export(String path) {
-		if (active) {
-		   Imgcodecs.imwrite(path , image);
+	private Personnel findSituablePersonnel(Map<Mat, Personnel> personnelWithConvertedImages, SearchResult searchResult) {
+		Set<Mat> situableMatrix = personnelWithConvertedImages.keySet()
+									.stream()
+									.filter(m -> builder.getVca().compare(m, searchResult.getMat()) < 9.0)
+									.collect(Collectors.toSet());
+		if (situableMatrix.isEmpty()) {
+			return null;
 		}
+		return personnelWithConvertedImages.get( 
+						situableMatrix.iterator().next() 
+						);
+	}
+	
+	
+	private Mat convertByteToMat(byte bytes[]) {
+		return Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
+	}
+	
+	private void export(Map<SearchResult, Optional<Personnel>> comparisonResult) {
+		
+		RectWithInfo rectWithInfo = new RectWithInfo();
+		
+		comparisonResult.forEach((searchResult, personnel) -> {
+			
+			Rect rect = searchResult.getRect();
+			
+			if (personnel.isPresent()) {
+				rectWithInfo.drawValidRect(rect, image, personnel.get());
+			} else {
+				rectWithInfo.drawUnknownRect(rect, image);
+			}
+		});
+		
+		Imgcodecs.imwrite(builder.getExportPath() , image);
 	}
 }

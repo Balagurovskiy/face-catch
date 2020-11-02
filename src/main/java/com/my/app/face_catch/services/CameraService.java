@@ -7,14 +7,15 @@ import java.util.List;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
-import com.my.app.face_catch.services.search_algorithm.VisualSearchAlgorithm;
+import com.my.app.face_catch.services.builder.VusialServiceBuilder;
+import com.my.app.face_catch.services.visual_algorithms.SearchResult;
+import com.my.app.face_catch.services.visual_algorithms.VisualSearchAlgorithm;
 
 public class CameraService implements VisualService {
 
 	private Mat image;
-	private VisualSearchAlgorithm vsa;
 	
-	public CameraService(VisualSearchAlgorithm vsa) {
+	public CameraService(VusialServiceBuilder builder) {
 //        VideoCapture capture = new VideoCapture();
 //        capture.set(CAP_PROP_FRAME_WIDTH, 1280);
 //        capture.set(CAP_PROP_FRAME_HEIGHT, 720);
@@ -25,15 +26,7 @@ public class CameraService implements VisualService {
 //		while (capture.read(image)) {}
 	}
 	@Override
-	public List<SearchResult> executeSearch() {
-		return  new ArrayList<SearchResult>();
-	}
-	@Override
-	public void export(String path) {
-	}
-	@Override
-	public Mat getImage() {
-		return null;
+	public void execute() {
 	}
 
 }

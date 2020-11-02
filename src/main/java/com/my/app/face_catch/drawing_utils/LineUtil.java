@@ -1,4 +1,4 @@
-package drawing_utils;
+package com.my.app.face_catch.drawing_utils;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -7,24 +7,27 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class RectangleUtil implements DrawingUtils {
+public class LineUtil implements DrawingUtils{
 
 	
-	private final int FILLED = Imgproc.FILLED;
-	private final int BORDERED = 2;
+	private final int FILLED = 3;
+	private final int BORDERED = 1;
 	
 	private int thikness;
 	
-	public RectangleUtil() {
+	public LineUtil() {
 		thikness = BORDERED;
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 	}
 	
 	@Override
 	public void draw(Mat src, Rect target, Scalar color) {
-		Imgproc.rectangle(
+		thikness = BORDERED;
+		
+		Imgproc.line(
 			src,                                              
-			target,
+			new Point(target.x, target.y),
+			new Point(target.width + target.x, target.height + target.y),
 			color,
 			thikness
 		);
@@ -32,10 +35,11 @@ public class RectangleUtil implements DrawingUtils {
 
 	@Override
 	public void draw(Mat src, Point start, int dist, Scalar color) {
-		Imgproc.rectangle(
+		thikness = BORDERED;
+		Imgproc.line(
 			src,                                              
 			start,
-			new Point(start.x + dist, start.y + dist),
+			new Point(dist + start.x, dist + start.y),
 			color,
 			thikness
 		);
@@ -43,7 +47,9 @@ public class RectangleUtil implements DrawingUtils {
 
 	@Override
 	public void draw(Mat src, Point start, Point end, Scalar color) {
-		Imgproc.rectangle(
+		thikness = BORDERED;
+		
+		Imgproc.line(
 			src,                                              
 			start,
 			end,
@@ -56,21 +62,17 @@ public class RectangleUtil implements DrawingUtils {
 	public void drawFilled(Mat src, Rect target, Scalar color) {
 		thikness = FILLED;
 		draw(src, target, color);
-		thikness = BORDERED;
 	}
 
 	@Override
 	public void drawFilled(Mat src, Point start, int dist, Scalar color) {
 		thikness = FILLED;
 		draw(src, start, dist, color);
-		thikness = BORDERED;
 	}
 
 	@Override
 	public void drawFilled(Mat src, Point start, Point end, Scalar color) {
 		thikness = FILLED;
 		draw(src, start, end, color);
-		thikness = BORDERED;
 	}
- 
 }

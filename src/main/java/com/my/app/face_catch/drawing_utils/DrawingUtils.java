@@ -1,4 +1,4 @@
-package drawing_utils;
+package com.my.app.face_catch.drawing_utils;
 
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;

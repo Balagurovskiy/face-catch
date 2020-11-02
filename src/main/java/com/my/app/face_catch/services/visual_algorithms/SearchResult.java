@@ -1,4 +1,4 @@
-package com.my.app.face_catch.services;
+package com.my.app.face_catch.services.visual_algorithms;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
