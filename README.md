@@ -6,10 +6,8 @@ Unfortunately opencv does not compile correctly with maven dependency and have t
 # example
 <p>For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>)</p>
 <img src="README/bd.png" height="500" width="800">
-<p>Input 1:</p>
-<img src="test_resources/test1/input.jpg" height="300" width="500">
-<img src="test_resources/test1/output.jpg" height="300" width="500">
-<p>Input 2:</p>
-<img src="test_resources/test2/input.jpg" height="300" width="500">
-<img src="test_resources/test2/output.jpg" height="300" width="500">
+<p>Results:</p>
+<img src="test_resources/test1/output.jpg" height="500" width="800">
+<p>- - - - - -</p>
+<img src="test_resources/test2/output.jpg" height="500" width="800">
 
