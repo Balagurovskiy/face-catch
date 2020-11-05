@@ -10,11 +10,11 @@ To configure inport/export files and files for image detection was used <a href=
 # configurations
 <br>
 # example
-<p>For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>)</p>
-<p>Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>)</p>
+For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>)
+Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>
 
 <img src="README/bd.png" height="500" width="800">
-<p>Results:</p>
+**Results:**
 <img src="test_resources/test1/output.jpg" height="500" width="800">
 <p></p>
 <img src="test_resources/test2/output.jpg" height="500" width="800">
