@@ -7,7 +7,7 @@ Unfortunately opencv does not compile correctly with maven dependency and have t
 <p>To configure inport/export files and files for image detection was used <a href="src/main/resources/settings.properties">settings.properties</a>.</p>
 # example
 <p>For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>)</p>
-<p>Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>)/p>
+<p>Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>)</p>
 <center>
 <img src="README/bd.png" height="500" width="800">
 <p>Results:</p>
