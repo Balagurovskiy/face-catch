@@ -6,17 +6,17 @@ Unfortunately opencv does not compile correctly with maven dependency and have t
 # properties
 To configure inport/export files and files for image detection was used <a href="src/main/resources/settings.properties">settings.properties</a>.
 # structure
-<img src="README/struc_scheme.png">
+<img src="README/struc_scheme.png"></img>
 # configurations
-<br>
+</br>
 # example
 For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>)
 Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>
 
-<img src="README/bd.png" height="500" width="800">
+<img src="src/main/resources/bd.png" height="500" width="800">
 **Results:**
-<img src="test_resources/test1/output.jpg" height="500" width="800">
+<img src="src/main/resources/test1/output.jpg" height="500" width="800">
 <p></p>
-<img src="test_resources/test2/output.jpg" height="500" width="800">
+<img src="src/main/resources/tast2/output.jpg" height="500" width="800">
 
 
