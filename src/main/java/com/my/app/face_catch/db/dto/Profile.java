@@ -6,7 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+/**
+* Profile entity - roles for personnel
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 @Entity
 @Table(name="profile")
 public class Profile {

@@ -14,8 +14,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
   
   <dependencies>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
      <dependency>
@@ -41,13 +41,13 @@
      dependency doesn't work 
      https://docs.opencv.org/2.4/doc/tutorials/introduction/java_eclipse/java_eclipse.html#java-eclipse
      -->
-<!-- 
+ 
 	<dependency>
 	    <groupId>org</groupId>
 	    <artifactId>opencv</artifactId>
    	    <version>4.1.2-1.5.2</version>
 	</dependency>
-	
+<!--	
 	<dependency>
 	   <groupId>org.bytedeco</groupId>
 	   <artifactId>opencv</artifactId>
@@ -64,6 +64,14 @@
 				<artifactId>spring-context</artifactId>
 				<version>5.0.6.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.0.6.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        
   </dependencies>
 
   <build>
@@ -108,6 +116,32 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        
+        
+        
+        
+        <plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-javadoc-plugin</artifactId>
+  			<version>3.1.0</version>
+  			<executions>
+  				<execution>
+  					<phase>prepare-package</phase>
+  					<goals>
+  						<goal>javadoc</goal>
+  					</goals>
+  				</execution>
+  			</executions>
+  			<configuration>
+  				<!--  optional  
+  				<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>-->
+  				<!-- to show the private methods in the javadoc 
+  				<show>private</show>-->
+  			</configuration>
+  		</plugin>
+        
+        
+        
       </plugins>
     </pluginManagement>
     <!-- 

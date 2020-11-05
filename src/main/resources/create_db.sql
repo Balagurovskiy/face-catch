@@ -16,3 +16,5 @@ CREATE TABLE `face_catch`.`personnel_profile` (
   `personnel_id` INT NOT NULL,
   `profilecol_id` INT NOT NULL,
   PRIMARY KEY (`id`));
+  
+  /*ALTER TABLE face_catch.personnel AUTO_INCREMENT = 4;*/

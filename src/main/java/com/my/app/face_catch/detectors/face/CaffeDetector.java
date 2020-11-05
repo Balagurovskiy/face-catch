@@ -7,7 +7,17 @@ import org.opencv.core.Rect;
 
 import com.my.app.face_catch.Property;
 import com.my.app.face_catch.services.visual_algorithms.SearchResult;
-
+/**
+* Caffe image detection model (deep learning)
+* 
+* <p>
+* currently not implemented
+* </p>
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 public class CaffeDetector implements FaceDetector {
 	
     

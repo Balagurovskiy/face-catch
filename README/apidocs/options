@@ -1,0 +1,22 @@
+-classpath
+'C:/Users/comp/.m2/repository/org/hibernate/hibernate-core/4.3.11.Final/hibernate-core-4.3.11.Final.jar;C:/Users/comp/.m2/repository/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA.jar;C:/Users/comp/.m2/repository/org/jboss/logging/jboss-logging-annotations/1.2.0.Beta1/jboss-logging-annotations-1.2.0.Beta1.jar;C:/Users/comp/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/jboss-transaction-api_1.2_spec-1.0.0.Final.jar;C:/Users/comp/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar;C:/Users/comp/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar;C:/Users/comp/.m2/repository/org/hibernate/common/hibernate-commons-annotations/4.0.5.Final/hibernate-commons-annotations-4.0.5.Final.jar;C:/Users/comp/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar;C:/Users/comp/.m2/repository/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar;C:/Users/comp/.m2/repository/antlr/antlr/2.7.7/antlr-2.7.7.jar;C:/Users/comp/.m2/repository/org/jboss/jandex/1.1.0.Final/jandex-1.1.0.Final.jar;C:/Users/comp/.m2/repository/mysql/mysql-connector-java/8.0.18/mysql-connector-java-8.0.18.jar;C:/Users/comp/.m2/repository/com/google/protobuf/protobuf-java/3.6.1/protobuf-java-3.6.1.jar;C:/Users/comp/.m2/repository/org/opencv/4.1.2-1.5.2/opencv-4.1.2-1.5.2.jar;C:/Users/comp/.m2/repository/javax/validation/validation-api/2.0.0.Final/validation-api-2.0.0.Final.jar;C:/Users/comp/.m2/repository/org/springframework/spring-context/5.0.6.RELEASE/spring-context-5.0.6.RELEASE.jar;C:/Users/comp/.m2/repository/org/springframework/spring-aop/5.0.6.RELEASE/spring-aop-5.0.6.RELEASE.jar;C:/Users/comp/.m2/repository/org/springframework/spring-beans/5.0.6.RELEASE/spring-beans-5.0.6.RELEASE.jar;C:/Users/comp/.m2/repository/org/springframework/spring-core/5.0.6.RELEASE/spring-core-5.0.6.RELEASE.jar;C:/Users/comp/.m2/repository/org/springframework/spring-jcl/5.0.6.RELEASE/spring-jcl-5.0.6.RELEASE.jar;C:/Users/comp/.m2/repository/org/springframework/spring-expression/5.0.6.RELEASE/spring-expression-5.0.6.RELEASE.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'D:/sts_workSpace/face-catch/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2020. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'D:/sts_workSpace/face-catch/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'face-catch 0.0.1-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'face-catch 0.0.1-SNAPSHOT API'

@@ -6,7 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import com.my.app.face_catch.Property;
-
+/**
+* Detector configuration
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 @Configuration
 public class DetectorConfiguration {
 	

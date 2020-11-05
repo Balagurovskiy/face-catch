@@ -10,7 +10,13 @@ import org.opencv.core.Rect;
 import com.my.app.face_catch.services.builder.VusialServiceBuilder;
 import com.my.app.face_catch.services.visual_algorithms.SearchResult;
 import com.my.app.face_catch.services.visual_algorithms.VisualSearchAlgorithm;
-
+/**
+* Service for operations with images based on camera capture. currently not implemented
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 public class CameraService implements VisualService {
 
 	private Mat image;

@@ -13,11 +13,18 @@ import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
+import com.my.app.face_catch.Property;
 import com.my.app.face_catch.db.dto.Personnel;
 import com.my.app.face_catch.drawing_utils.patterns.RectWithInfo;
 import com.my.app.face_catch.services.builder.VusialServiceBuilder;
 import com.my.app.face_catch.services.visual_algorithms.SearchResult;
-
+/**
+* Service for operations with images based on input image.
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 public class ImageService implements VisualService {
 	
 	private Mat image;
@@ -28,7 +35,11 @@ public class ImageService implements VisualService {
 	public ImageService() {
 		active = false;
 	}
-	
+    /**
+     * Constructor. Inits opencv core. Create matrix from input image.
+     * @param builder - contains import/export path, visual compare and detection algorithms, personnel from db
+     * @return nothing
+     */
 	public ImageService(VusialServiceBuilder builder) {
 		this.builder = builder;
 		
@@ -50,7 +61,11 @@ public class ImageService implements VisualService {
 			active = false;
 		}
 	}
-	
+    /**
+     * Creates matrices from detected areas. Loads personnel from DB. Compares detected matrices with images from DB. Draw boxes with result and save into new image.
+     * @param nothing
+     * @return nothing
+     */
 	@Override
 	public void execute() {
 		if (active) {

@@ -2,7 +2,13 @@ package com.my.app.face_catch.db.dao;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+/**
+* Personnel DAO configuration
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 @Configuration
 public class PersonnelDaoConfiguration {
 

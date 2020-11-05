@@ -7,7 +7,13 @@ import org.springframework.context.annotation.Lazy;
 
 import com.my.app.face_catch.comparator.MatrixComparator;
 import com.my.app.face_catch.detectors.face.FaceDetector;
-
+/**
+* Configuration for visual algorithms.
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 @Configuration
 public class VisualAlgorithmConfiguration {
 

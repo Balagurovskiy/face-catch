@@ -2,7 +2,13 @@ package com.my.app.face_catch.services.visual_algorithms;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-
+/**
+* POJO for opencv Mat nad Rect
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 public class SearchResult {
 	
 	private final Mat mat;

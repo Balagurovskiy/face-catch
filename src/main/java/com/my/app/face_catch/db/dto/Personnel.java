@@ -12,7 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-
+/**
+* Personnel entity - name / image data
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 @Entity
 @Table(name="personnel")
 public class Personnel implements Serializable{

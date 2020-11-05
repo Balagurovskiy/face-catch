@@ -1,0 +1,10 @@
+com.my.app.face_catch
+com.my.app.face_catch.comparator
+com.my.app.face_catch.db.dao
+com.my.app.face_catch.db.dto
+com.my.app.face_catch.detectors.face
+com.my.app.face_catch.drawing_utils
+com.my.app.face_catch.drawing_utils.patterns
+com.my.app.face_catch.services
+com.my.app.face_catch.services.builder
+com.my.app.face_catch.services.visual_algorithms

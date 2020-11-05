@@ -1,9 +1,16 @@
 package com.my.app.face_catch.services.builder;
 
+import com.my.app.face_catch.Property;
 import com.my.app.face_catch.db.dao.PersonnelDao;
 import com.my.app.face_catch.services.visual_algorithms.VisualCompareAlgorithm;
 import com.my.app.face_catch.services.visual_algorithms.VisualSearchAlgorithm;
-
+/**
+* Builder for visual services
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 public class VusialServiceBuilder {
 	private boolean vsaReady;
 	private VisualSearchAlgorithm vsa;
@@ -19,7 +26,11 @@ public class VusialServiceBuilder {
 	
 	private boolean daoReady;
 	private PersonnelDao personnelDao;
-	
+    /**
+     * Constructor. Is not ready by default.
+     * @param nothing
+     * @return nothing
+     */
 	public VusialServiceBuilder() {
 		vsaReady = false;
 		vcaReady = false;
@@ -27,11 +38,17 @@ public class VusialServiceBuilder {
 		exportReady = false;
 		daoReady = false;
 	}
-	
+    /**
+     * State of builder.
+     * @param nothing
+     * @return boolean flag that shows that all properties of builder were set.
+     */
 	public boolean isReady() {
 		return vsaReady && vcaReady && importReady && exportReady && daoReady;
 	}
-	
+    /**
+     * {@link VusialServiceBuilder#vsa}
+     */
 	public VisualSearchAlgorithm getVsa() {
 		return vsa;
 	}
@@ -41,6 +58,9 @@ public class VusialServiceBuilder {
 		}
 		this.vsa = vsa;
 	}
+    /**
+     * {@link VusialServiceBuilder#vca}
+     */
 	public VisualCompareAlgorithm getVca() {
 		return vca;
 	}
@@ -50,7 +70,9 @@ public class VusialServiceBuilder {
 		}
 		this.vca = vca;
 	}
-	
+    /**
+     * {@link VusialServiceBuilder#importPath}
+     */
 	public String getImportPath() {
 		return importPath;
 	}
@@ -60,7 +82,9 @@ public class VusialServiceBuilder {
 		}
 		this.importPath = importPath;
 	}
-	
+    /**
+     * {@link VusialServiceBuilder#exportPath}
+     */
 	public String getExportPath() {
 		return exportPath;
 	}
@@ -70,7 +94,9 @@ public class VusialServiceBuilder {
 		}
 		this.exportPath = exportPath;
 	}
-
+    /**
+     * {@link VusialServiceBuilder#personnelDao}
+     */
 	public PersonnelDao getPersonnelDao() {
 		return personnelDao;
 	}

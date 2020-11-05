@@ -14,16 +14,30 @@ import org.opencv.objdetect.CascadeClassifier;
 
 import com.my.app.face_catch.Property;
 import com.my.app.face_catch.services.visual_algorithms.SearchResult;
-
+/**
+* Image detector based on cascade model
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 public class CascadeDetector implements FaceDetector {
     
     private CascadeClassifier classifier;
     private boolean active;
-    
+    /**
+     * Empty constructor
+     * @param nothing
+     * @return nothing
+     */
     public CascadeDetector() {
     	active = false;
 	}
-    
+    /**
+     * Constructor. Creates cascade classifier from input xml data
+     * @param imageFilePath - xml file with cascades 
+     * @return nothing
+     */
 	public CascadeDetector(String imageFilePath) {
 		active = true;
 
@@ -38,7 +52,11 @@ public class CascadeDetector implements FaceDetector {
 			active = false;
 		}
 	}
-
+    /**
+     * Finds pixel areas that suits the cascade
+     * @param mat - input matrix that will be the target for cascade detector
+     * @return Collection with detection results (SearchResult - Mat and Rect)
+     */
 	@Override
 	public List<SearchResult> find(Mat mat) {
 		if (active) {

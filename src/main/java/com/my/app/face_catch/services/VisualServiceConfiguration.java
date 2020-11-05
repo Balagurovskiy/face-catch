@@ -11,7 +11,13 @@ import com.my.app.face_catch.db.dao.PersonnelDao;
 import com.my.app.face_catch.services.builder.VusialServiceBuilder;
 import com.my.app.face_catch.services.visual_algorithms.VisualCompareAlgorithm;
 import com.my.app.face_catch.services.visual_algorithms.VisualSearchAlgorithm;
-
+/**
+* Configurations for visual services.
+*
+* @author  Balagurovskiy
+* @version 1.0
+* @since   2020-11-4 
+*/
 @Configuration
 public class VisualServiceConfiguration {
 
@@ -33,6 +39,7 @@ public class VisualServiceConfiguration {
 		builder.setExportPath(property.getProperty(IMAGE_TARGET));
 		return builder;
 	}
+	
 	@Bean(name="imageServiceCascade")
 	public VisualService imageServiceWithCascades(@Qualifier("cascadeFDA")VisualSearchAlgorithm vsa,
 													@Qualifier("matrixCA")VisualCompareAlgorithm vca) {
