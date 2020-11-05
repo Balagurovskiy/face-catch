@@ -6,7 +6,7 @@ Unfortunately opencv does not compile correctly with maven dependency and have t
 # properties
 To configure inport/export files and files for image detection was used <a href="src/main/resources/settings.properties">settings.properties</a>.
 # structure
-<img src="README/struc_scheme.png" height="500" width="800">
+<img src="README/struc_scheme.png">
 # configurations
 <br>
 # example
