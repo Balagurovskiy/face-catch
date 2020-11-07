@@ -8,15 +8,14 @@ To configure inport/export files and files for image detection was used <a href=
 # structure
 <img src="README/struc_scheme.png"></img>
 # configurations
-<img src="README/config2.png" height="500" width="800"></img>
+<img src="README/config2.png"></img>
 # example
-For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>)
+For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>).
 Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>
-
-<img src="README/db.png" height="500" width="800"></img>
+<img src="README/db.png"></img>
 **Results:**
-<img src="src/main/resources/test1/output.jpg" height="500" width="800"></img>
+<img src="src/main/resources/test1/output.jpg"></img>
 <p></p>
-<img src="src/main/resources/tast2/output.jpg" height="500" width="800"></img>
+<img src="src/main/resources/tast2/output.jpg"></img>
 
 
