@@ -1,5 +1,7 @@
 package com.my.app.face_catch.drawing_utils.patterns;
 
+import java.util.List;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -34,20 +36,23 @@ public class RectWithInfo {
      * @param personnel - object with information (name / role)
      * @return nothing
      */
-	public void drawValidRect(Rect rect, Mat source, Personnel personnel) {
+	public void drawValidRect(Rect rect, Mat source, List<String> info) {
+		
+		int infoBoxSize = 20 * info.size();
 		Point start = new Point(rect.x, rect.y + rect.height);
-		Point end = new Point(rect.x + rect.width, rect.y + rect.height + 40);
+		Point end = new Point(rect.x + rect.width, rect.y + rect.height + infoBoxSize);
 		
 		rectangleUtil.draw(source, rect, GREEN);
 		rectangleUtil.drawFilled(source, start, end, GREEN);
 		
-		rectangleUtil.drawTextWhite(source,
-				new Point(rect.x, rect.y + rect.height + 15),
-				personnel.getName());
-		
-		rectangleUtil.drawTextWhite(source,
-				new Point(rect.x, rect.y + rect.height + 30),
-				personnel.getProfile().getRole());
+		int infTestHeigth = 15;
+		for(String i : info) {
+			rectangleUtil.drawTextWhite(source,
+					new Point(rect.x, rect.y + rect.height + infTestHeigth),
+					i);
+			infTestHeigth += 15;
+		}
+
 	}
     /**
      * Creates red rectangle with 'Unknown' box

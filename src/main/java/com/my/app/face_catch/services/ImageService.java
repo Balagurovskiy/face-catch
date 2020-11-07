@@ -17,7 +17,7 @@ import com.my.app.face_catch.Property;
 import com.my.app.face_catch.db.dto.Personnel;
 import com.my.app.face_catch.drawing_utils.patterns.RectWithInfo;
 import com.my.app.face_catch.services.builder.VusialServiceBuilder;
-import com.my.app.face_catch.services.visual_algorithms.SearchResult;
+import com.my.app.face_catch.services.visual_algorithms.Image;
 /**
 * Service for operations with images based on input image.
 *
@@ -69,68 +69,52 @@ public class ImageService implements VisualService {
 	@Override
 	public void execute() {
 		if (active) {
-			List<SearchResult> foundFaces = builder.getVsa().find(image);
-			List<Personnel> imagesFromDataBase = builder.getPersonnelDao().getPersonnel();
+			List<Image> foundFaces = builder.getVisualSearchAlgorithm().find(image);
+			
+			List<Image> dataSource = builder.getVisualDataSource().create();
 			
 			//CALCULATE DIFFERENCES BETWEEN FOUND FACE IMAGE MATRICES WITH DB MATRICES
-			Map<SearchResult, Optional<Personnel>> comparisonResult = matchPersonnelWithFoundFaces(foundFaces, imagesFromDataBase);
-			
+			List<Image> comparisonResult = matchDataSourceWithDetectedResults(foundFaces, dataSource);
 			export(comparisonResult);
 		}
 	}
 	
-	private Map<SearchResult, Optional<Personnel>> matchPersonnelWithFoundFaces(List<SearchResult> foundFaces, List<Personnel> imagesFromDataBase){
-		// CONVERT IMAGE BYTE ARR FROM DB TO OPENCV MATRIX
-		Map<Mat, Personnel> personnelWithConvertedImages = imagesFromDataBase
+	private List<Image> matchDataSourceWithDetectedResults(List<Image> detected, List<Image> dataSource){
+		return detected
 				.stream()
-				.collect(
-						Collectors.toMap(
-								p -> convertByteToMat(p.getImage()), 
-								p -> p
-								)
-						);
-		
-		return foundFaces
-				.stream()
-				.collect(
-						Collectors.toMap(
-									sr-> sr,
-									sr-> Optional.ofNullable(
-											findSituablePersonnel(personnelWithConvertedImages, sr)
-											)
-									)
-						);
+				.map(detect -> {
+					Optional<Image> os = Optional.ofNullable(findSituableResult(dataSource, detect));
+					if (os.isPresent()) {
+						detect.setInfo(os.get().getInfo());
+					}
+					return detect; 
+					})
+				.collect(Collectors.toList());
 	}
-	private Personnel findSituablePersonnel(Map<Mat, Personnel> personnelWithConvertedImages, SearchResult searchResult) {
-		Set<Mat> situableMatrix = personnelWithConvertedImages.keySet()
+
+	private Image findSituableResult(List<Image> resultWithInfo, Image resultToCompare) {
+		Set<Image> situableMatrix = resultWithInfo
 									.stream()
-									.filter(m -> builder.getVca().compare(m, searchResult.getMat()) < 9.0)
+									.filter(sr -> builder.getVisualCompareAlgorithm().compare(sr.getMat(), resultToCompare.getMat()) < 9.0)
 									.collect(Collectors.toSet());
 		if (situableMatrix.isEmpty()) {
 			return null;
 		}
-		return personnelWithConvertedImages.get( 
-						situableMatrix.iterator().next() 
-						);
+		return situableMatrix.iterator().next();
 	}
 	
-	
-	private Mat convertByteToMat(byte bytes[]) {
-		return Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.IMREAD_UNCHANGED);
-	}
-	
-	private void export(Map<SearchResult, Optional<Personnel>> comparisonResult) {
+	private void export(List<Image> comparisonResult) {
 		
 		RectWithInfo rectWithInfo = new RectWithInfo();
 		
-		comparisonResult.forEach((searchResult, personnel) -> {
+		comparisonResult.forEach((searchResult) -> {
 			
 			Rect rect = searchResult.getRect();
 			
-			if (personnel.isPresent()) {
-				rectWithInfo.drawValidRect(rect, image, personnel.get());
-			} else {
+			if (searchResult.getInfo().isEmpty()) {
 				rectWithInfo.drawUnknownRect(rect, image);
+			} else {
+				rectWithInfo.drawValidRect(rect, image, searchResult.getInfo());
 			}
 		});
 		

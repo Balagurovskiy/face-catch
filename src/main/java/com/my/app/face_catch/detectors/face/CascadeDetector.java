@@ -13,7 +13,7 @@ import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 
 import com.my.app.face_catch.Property;
-import com.my.app.face_catch.services.visual_algorithms.SearchResult;
+import com.my.app.face_catch.services.visual_algorithms.Image;
 /**
 * Image detector based on cascade model
 *
@@ -58,7 +58,7 @@ public class CascadeDetector implements FaceDetector {
      * @return Collection with detection results (SearchResult - Mat and Rect)
      */
 	@Override
-	public List<SearchResult> find(Mat mat) {
+	public List<Image> find(Mat mat) {
 		if (active) {
 			
 			MatOfRect faceDetections = new MatOfRect();
@@ -72,10 +72,10 @@ public class CascadeDetector implements FaceDetector {
 			return Arrays.asList(faceDetections.toArray())
 								.stream()
 								.map(
-										rect -> new SearchResult(mat.submat(rect), rect)
+										rect -> new Image(mat.submat(rect), rect)
 									)
 								.collect(Collectors.toList());
 		}
-		return new ArrayList<SearchResult>();
+		return new ArrayList<Image>();
 	}
 }

@@ -6,7 +6,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
 import com.my.app.face_catch.Property;
-import com.my.app.face_catch.services.visual_algorithms.SearchResult;
+import com.my.app.face_catch.services.visual_algorithms.Image;
 /**
 * Caffe image detection model (deep learning)
 * 
@@ -30,7 +30,7 @@ public class CaffeDetector implements FaceDetector {
 	}
  
 	@Override
-	public List<SearchResult> find(Mat mat) {
+	public List<Image> find(Mat mat) {
 //        resize(mat, mat, new Size(300, 300));//resize the image to match the input size of the model
 //
 //        //create a 4-dimensional blob from image with NCHW (Number of images in the batch -for training only-, Channel, Height, Width) dimensions order,

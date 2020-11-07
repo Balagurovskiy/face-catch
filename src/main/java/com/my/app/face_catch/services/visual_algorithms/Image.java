@@ -1,5 +1,8 @@
 package com.my.app.face_catch.services.visual_algorithms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 /**
@@ -9,14 +12,25 @@ import org.opencv.core.Rect;
 * @version 1.0
 * @since   2020-11-4 
 */
-public class SearchResult {
+public class Image {
 	
 	private final Mat mat;
 	private final Rect rect;
+	private List<String> info;
 	
-	public SearchResult(Mat mat, Rect rect) {
+	public Image(Mat mat, Rect rect) {
 		this.rect = rect;
 		this.mat = mat;
+		this.info = new ArrayList<>();
+	}
+	public List<String> getInfo() {
+		return info;
+	}
+	public void addInfo(String text) {
+		info.add(text);
+	}
+	public void setInfo(List<String> info) {
+		this.info = info;
 	}
 	public Mat getMat() {
 		return mat.clone();
@@ -39,7 +53,7 @@ public class SearchResult {
 		if (this == obj)
 			return true;
 		
-		SearchResult that = (SearchResult) obj;
+		Image that = (Image) obj;
 		
 		if (mat.cols() == that.getMat().cols() && mat.rows() == that.getMat().rows()) {
 			if (rect.height == that.getRect().height && rect.width == that.getRect().width) {

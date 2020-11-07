@@ -13,5 +13,5 @@ import org.opencv.core.Rect;
 * @since   2020-11-4 
 */
 public interface VisualSearchAlgorithm{
-	public List<SearchResult> find(Mat mat);
+	public List<Image> find(Mat mat);
 }

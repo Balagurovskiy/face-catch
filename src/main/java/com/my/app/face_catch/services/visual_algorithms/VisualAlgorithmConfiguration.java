@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import com.my.app.face_catch.comparator.MatrixComparator;
+import com.my.app.face_catch.db.dao.PersonnelAdapter;
 import com.my.app.face_catch.detectors.face.FaceDetector;
 /**
 * Configuration for visual algorithms.
@@ -21,6 +22,12 @@ public class VisualAlgorithmConfiguration {
 	public VisualSearchAlgorithm cascadeFaceDetectorAlgorithm(@Qualifier("cascade")FaceDetector fd) {
 		return (VisualSearchAlgorithm)fd;
 	}
+	
+	@Bean(name="personnelDS")
+	public VisualDataSource personnelDataSource(@Qualifier("personnelAdapter")PersonnelAdapter personnelAdapter) {
+		return (VisualDataSource) personnelAdapter;
+	}
+	
 	
 	@Bean(name="matrixCA")
 	public VisualCompareAlgorithm matrixCompareAlgorithm(@Qualifier("matrixCmp")MatrixComparator mc) {

@@ -11,11 +11,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.my.app.face_catch.db.dao.PersonnelDao;
-import com.my.app.face_catch.db.dao.PersonnelDaoConfiguration;
+import com.my.app.face_catch.db.dao.PersonnelConfiguration;
 import com.my.app.face_catch.db.dto.Personnel;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersonnelDaoConfiguration.class})
+@ContextConfiguration(classes = {PersonnelConfiguration.class})
 public class PersonnelDaoTest {
 
 	@Autowired

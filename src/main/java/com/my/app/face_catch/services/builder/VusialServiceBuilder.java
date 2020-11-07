@@ -1,8 +1,7 @@
 package com.my.app.face_catch.services.builder;
 
-import com.my.app.face_catch.Property;
-import com.my.app.face_catch.db.dao.PersonnelDao;
 import com.my.app.face_catch.services.visual_algorithms.VisualCompareAlgorithm;
+import com.my.app.face_catch.services.visual_algorithms.VisualDataSource;
 import com.my.app.face_catch.services.visual_algorithms.VisualSearchAlgorithm;
 /**
 * Builder for visual services
@@ -13,10 +12,10 @@ import com.my.app.face_catch.services.visual_algorithms.VisualSearchAlgorithm;
 */
 public class VusialServiceBuilder {
 	private boolean vsaReady;
-	private VisualSearchAlgorithm vsa;
+	private VisualSearchAlgorithm visualSearchAlgorithm;
 	
 	private boolean vcaReady;
-	private VisualCompareAlgorithm vca;
+	private VisualCompareAlgorithm visualCompareAlgorithm;
 	
 	private boolean importReady;
 	private String importPath;
@@ -24,8 +23,8 @@ public class VusialServiceBuilder {
 	private boolean exportReady;
 	private String exportPath;
 	
-	private boolean daoReady;
-	private PersonnelDao personnelDao;
+	private boolean vdsReady;
+	private VisualDataSource visualDataSource;
     /**
      * Constructor. Is not ready by default.
      * @param nothing
@@ -36,7 +35,7 @@ public class VusialServiceBuilder {
 		vcaReady = false;
 		importReady = false;
 		exportReady = false;
-		daoReady = false;
+		vdsReady = false;
 	}
     /**
      * State of builder.
@@ -44,31 +43,31 @@ public class VusialServiceBuilder {
      * @return boolean flag that shows that all properties of builder were set.
      */
 	public boolean isReady() {
-		return vsaReady && vcaReady && importReady && exportReady && daoReady;
+		return vsaReady && vcaReady && importReady && exportReady && vdsReady;
 	}
     /**
-     * {@link VusialServiceBuilder#vsa}
+     * {@link VusialServiceBuilder#visualSearchAlgorithm}
      */
-	public VisualSearchAlgorithm getVsa() {
-		return vsa;
+	public VisualSearchAlgorithm getVisualSearchAlgorithm() {
+		return visualSearchAlgorithm;
 	}
-	public void setVsa(VisualSearchAlgorithm vsa) {
+	public void setVisualSearchAlgorithm(VisualSearchAlgorithm vsa) {
 		if (vsa != null) {
 			vsaReady = true;
 		}
-		this.vsa = vsa;
+		this.visualSearchAlgorithm = vsa;
 	}
     /**
-     * {@link VusialServiceBuilder#vca}
+     * {@link VusialServiceBuilder#visualCompareAlgorithm}
      */
-	public VisualCompareAlgorithm getVca() {
-		return vca;
+	public VisualCompareAlgorithm getVisualCompareAlgorithm() {
+		return visualCompareAlgorithm;
 	}
-	public void setVca(VisualCompareAlgorithm vca) {
+	public void setVisualCompareAlgorithm(VisualCompareAlgorithm vca) {
 		if (vca != null) {
 			vcaReady = true;
 		}
-		this.vca = vca;
+		this.visualCompareAlgorithm = vca;
 	}
     /**
      * {@link VusialServiceBuilder#importPath}
@@ -97,15 +96,15 @@ public class VusialServiceBuilder {
     /**
      * {@link VusialServiceBuilder#personnelDao}
      */
-	public PersonnelDao getPersonnelDao() {
-		return personnelDao;
+	public VisualDataSource getVisualDataSource() {
+		return visualDataSource;
 	}
 
-	public void setPersonnelDao(PersonnelDao personnelDao) {
-		if (personnelDao != null) {
-			daoReady = true;
+	public void setVisualDataSource(VisualDataSource visualDataSource) {
+		if (visualDataSource != null) {
+			vdsReady = true;
 		}
-		this.personnelDao = personnelDao;
+		this.visualDataSource = visualDataSource;
 	}
 	
 	
