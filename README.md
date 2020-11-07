@@ -9,13 +9,13 @@ To configure inport/export files and files for image detection was used <a href=
 <img src="README/struc_scheme.png"></img>
 # configurations
 <img src="README/config2.png"></img>
-# example
+# data-source-example
 For example was used MySQL database (<a href="src/main/resources/create_db.sql">create script</a>).
 Hibernate configuration <a href="src/main/resources/face_catch.cfg.xml">face_catch.cfg.xml</a>
 <img src="README/db.png"></img>
-**Results:**
+# example-results
 <img src="src/main/resources/test1/output.jpg"></img>
 <p></p>
-<img src="src/main/resources/tast2/output.jpg"></img>
+<img src="src/main/resources/test2/output.jpg"></img>
 
 
