@@ -1,9 +1,10 @@
 # face-catch
 ---
 # version 1.0
-  <p>Image detection models:</p>
+  **<p>Image detection models:</p>
   <p>cascade model - ready</p>
   <p>deeplearn(caffe) model - not implemented</p>
+  ---
   <p>Services:</p>
   <p>image based service - ready</p>
   <p>camera based service - not implemented</p>
