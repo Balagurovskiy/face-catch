@@ -1,7 +1,7 @@
 # face-catch
 A variant of the project for determining valid images. This configuration used a small database with three faces that will be searched for in the input images. For face detection was used OpenCV lib with xml cascades.
 # version
-  <p style="text-color:green">cascade model</p>
+  <p style="color:green">cascade model</p>
   
 # opencv
 Unfortunately opencv does not compile correctly with maven dependency and have to be added manually to the build path
