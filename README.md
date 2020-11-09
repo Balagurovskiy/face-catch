@@ -1,17 +1,16 @@
 # face-catch
 ---
 # version 1.0
-  **<p>Image detection models:</p>
+  <p><b>Image detection models:</b></p>
   <p>cascade model - ready</p>
   <p>deeplearn(caffe) model - not implemented</p>
-  ---
-  <p>Services:</p>
+  <p><b>Services:</b></p>
   <p>image based service - ready</p>
   <p>camera based service - not implemented</p>
-  <p>Image comparison:</p>
+  <p><b>Image comparison:</b></p>
   <p>matrix comparison - ready</p>
   <p>other comparators - not implemented</p>
-  <p>Image source:</p>
+  <p><b>Image source:</b></p>
   <p>Hibernate ORM</p>
  
 # opencv
