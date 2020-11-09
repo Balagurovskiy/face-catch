@@ -4,17 +4,17 @@ The main idea of the project is to create a system that will validate the specif
 Unfortunately opencv does not compile correctly with maven dependency and have to be added manually to the build path
 ( <a target="_blank" href="https://docs.opencv.org/2.4/doc/tutorials/introduction/java_eclipse/java_eclipse.html#java-eclipse">How to add opencv</a> )
 # version 1.0
-  <p><b>Image detection models:</b></p>
-  <p>cascade model - ready</p>
-  <p>deeplearn(caffe) model - not implemented</p>
-  <p><b>Services:</b></p>
-  <p>image based service - ready</p>
-  <p>camera based service - not implemented</p>
-  <p><b>Image comparison:</b></p>
-  <p>matrix comparison - ready</p>
-  <p>other comparators - not implemented</p>
-  <p><b>Image source:</b></p>
-  <p>Hibernate ORM</p>
+<p><b>Image detection models:</b></p>
+<p>cascade model - ready</p>
+<p>deeplearn(caffe) model - not implemented</p>
+<p><b>Services:</b></p>
+<p>image based service - ready</p>
+<p>camera based service - not implemented</p>
+<p><b>Image comparison:</b></p>
+<p>matrix comparison - ready</p>
+<p>other comparators - not implemented</p>
+<p><b>Image source:</b></p>
+<p>Hibernate ORM</p>
 # properties
 Inport/export files; files for image detection - <a href="src/main/resources/settings.properties">settings.properties</a>.
 # structure
