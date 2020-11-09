@@ -1,5 +1,8 @@
 # face-catch
----
+The main idea of the project is to create a system that will validate the specified visual sources with the available source of images. For the first version, a database with three entries (blob and additional data) and several images for comparison (two photos of 12 faces each) with an established data source were used. To identify faces, an OpenCV framefork (cascade model) was used.
+# opencv
+Unfortunately opencv does not compile correctly with maven dependency and have to be added manually to the build path
+( <a target="_blank" href="https://docs.opencv.org/2.4/doc/tutorials/introduction/java_eclipse/java_eclipse.html#java-eclipse">How to add opencv</a> )
 # version 1.0
   <p><b>Image detection models:</b></p>
   <p>cascade model - ready</p>
@@ -12,12 +15,8 @@
   <p>other comparators - not implemented</p>
   <p><b>Image source:</b></p>
   <p>Hibernate ORM</p>
- 
-# opencv
-Unfortunately opencv does not compile correctly with maven dependency and have to be added manually to the build path
-( <a target="_blank" href="https://docs.opencv.org/2.4/doc/tutorials/introduction/java_eclipse/java_eclipse.html#java-eclipse">How to add opencv</a> )
 # properties
-To configure inport/export files and files for image detection was used <a href="src/main/resources/settings.properties">settings.properties</a>.
+Inport/export files; files for image detection - <a href="src/main/resources/settings.properties">settings.properties</a>.
 # structure
 <img src="README/struc_scheme.png"></img>
 # configurations
