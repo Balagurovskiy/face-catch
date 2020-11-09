@@ -15,6 +15,7 @@ Unfortunately opencv does not compile correctly with maven dependency and have t
 <p>other comparators - not implemented</p>
 <p><b>Image source:</b></p>
 <p>Hibernate ORM</p>
+
 # properties
 Inport/export files; files for image detection - <a href="src/main/resources/settings.properties">settings.properties</a>.
 # structure
